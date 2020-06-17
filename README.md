@@ -1,7 +1,7 @@
 # Dodgeball
 Dodgeball
 ======
-Supplimentary material for the paper "Randomness and Dynamics of Dodgeball". Contains Python and Matlab code according to a stochastic description of the game dodgeball. In particular this code uses Matlab R2018a and Python 3. Specifically, this project contains files for simulating dodgeball in Python and for finding the probability of winning a game in Matlab.
+Supplimentary material for the paper "Randomness and Dynamics of Dodgeball". Contains Python and Matlab code according to a stochastic description of the game dodgeball. Specifically, this project contains files for simulating dodgeball in Python and for finding the probability of winning a game in Matlab.
 
 Brief Description of Game
 ------
