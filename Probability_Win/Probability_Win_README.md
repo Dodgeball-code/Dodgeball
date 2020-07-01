@@ -10,6 +10,9 @@ Functions
 * `f2`: Probability a player on Team 2 targets a player on the opposing court
 * `pe`: probability a ball tossed at `X` players in a court hits (as a function of `X`)
 * `pj`: probability a ball tossed at `Y` players in a jail is caught (as a function of `Y`)
+* `tolerance`: allowed error of simulation
+* `maxIterations`: maximum number of matrix vector products
+* `Team`: Team observed (either 0 or 1)
 
 `PWinStalemate`: Finds `P1`, the probability that Team 1 wins a game for a given set of parameters. Implemented by repeatedly squaring the probability transition matrix to create large timesteps. This algorithm is generally slower than `PWin` unless a game's parameters lead to stalemate. Returns the probability that a game is won and a boolean error value (True if the calculation runs too long or there is significant numerical error). Parameters included are
 * `N`: Number of players per team,
@@ -17,3 +20,6 @@ Functions
 * `f2`: Probability a player on Team 2 targets a player on the opposing court
 * `pe`: probability a ball tossed at `X` players in a court hits (as a function of `X`)
 * `pj`: probability a ball tossed at `Y` players in a jail is caught (as a function of `Y`)
+* `tolerance`: allowed error of simulation
+* `maxIterations`: maximum number of non-sparse matrix products
+* `Team`: Team observed (either 0 or 1)
