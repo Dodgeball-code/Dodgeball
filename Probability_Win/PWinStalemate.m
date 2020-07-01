@@ -13,7 +13,7 @@ function [PTeam, error] = PWinStalemate(N, f1, f2, pe, pj,...
 %       at X players in the opposing court
 %  - pj = function of Y as probability of success against Y players in jail
 %  - tolerance = allowed error of |P1 + P2 - 1|
-%  - maxIterations = maximum number of matrix vector products
+%  - maxIterations = maximum number of non-saprse matrix products
 %  - Team = Team to get probability (either 0 or 1)
 % output parameters:
 %  - P1 = probability team 1 wins
