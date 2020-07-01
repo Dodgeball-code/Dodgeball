@@ -1,4 +1,5 @@
-function [P1, error] = PWinStalemate(N,f1,f2,pe,pj)
+function [PTeam, error] = PWinStalemate(N, f1, f2, pe, pj,...
+    tolerance, maxIterations, Team)
 %PWIN Finds the probability of winning for two teams in a dodgeball game
 %   using matrix exponentiation. This is good for exceedingly long games
 %   but inefficient for games of reasonable length (otherwise sparse vector
@@ -11,6 +12,9 @@ function [P1, error] = PWinStalemate(N,f1,f2,pe,pj)
 %  - pe = function of X as the probability of success of a ball tossed
 %       at X players in the opposing court
 %  - pj = function of Y as probability of success against Y players in jail
+%  - tolerance = allowed error of |P1 + P2 - 1|
+%  - maxIterations = maximum number of matrix vector products
+%  - Team = Team to get probability (either 0 or 1)
 % output parameters:
 %  - P1 = probability team 1 wins
 %  - error = boolean for if timeout or significant numerical error reached
@@ -68,28 +72,25 @@ function [P1, error] = PWinStalemate(N,f1,f2,pe,pj)
     % find the probability of winning in one step
     PW = PWupdate(N,P);
     
-    i = 0;                  % index
-    eps = 1e-4;             % tolerance for 
-    maxIterations = 256;    % maximum times matrix can be squared
-                    
+    n = 0;                  % number of iterations
     % iterate matrix exponent until sufficiently close to probability of 1
-    while(sum(PW)+eps < 1 && i<maxIterations) 
+    while(abs(sum(PW)-1) > tolerance && n<maxIterations) 
         P = normalize(P);       % keep a right stochastic matrix
         P = P^2;               
         PW = PWupdate(N,P);     % update win probabilities
-        i = i+1;              
+        n = n+1;              
     end
     
-    eps = 1e-4;             % new tolerance for overshoot
-    % if probability of winning is unreasonably large or timeout
-    if(sum(PW)-eps > 1 || i>=maxIterations)
+    % if probability of winning is unreasonable (e.g. timeout or numerical
+    % instability
+    if(abs(sum(PW)-1) > tolerance)
         error = true;
     else
         error = false;
     end
     
     % only give probability for Team 1.
-    P1 = PW(1);
+    PTeam = PW(Team);
 end
 
 

@@ -1,4 +1,5 @@
-function [P1, error] = PWin(N,f1,f2,pe,pj)
+function [PTeam, error] = PWin(N, f1, f2, pe, pj,...
+    tolerance, maxIterations, Team)
 %PWIN Finds the probability of winning for two teams in a dodgeball game
 %   using sparse matrix vector products. This is good for shorter games
 %   but inefficient for games in stalemate
@@ -10,6 +11,9 @@ function [P1, error] = PWin(N,f1,f2,pe,pj)
 %  - pe = function of X as the probability of success of a ball tossed
 %       at X players in the opposing court
 %  - pj = function of Y as probability of success against Y players in jail
+%  - tolerance = allowed error of |P1 + P2 - 1|
+%  - maxIterations = maximum number of matrix vector products
+%  - Team = Team to get probability (either 0 or 1)
 % output parameters:
 %  - P1 = probability team 1 wins
 %  - error = boolean for if timeout or significant numerical error reached
@@ -90,30 +94,24 @@ function [P1, error] = PWin(N,f1,f2,pe,pj)
     
     PW = PWupdate(N,v);
     
-    n = 0;                  % number of iterations
-    eps = 1e-4;             % tolerance for 
-    maxIterations = 500*N^2;  % maximum timesteps
-    % this number of iterations should be comparable to the time of the
-    % stalemate algorithm...
-                    
+    n = 0;                  % number of iterations so far 
     % iterate matrix exponent until sufficiently close to probability of 1
-    while(sum(PW)+eps < 1 && n<maxIterations) 
+    while(abs(sum(PW)-1) > tolerance && n<maxIterations) 
         v = normalize(v);       % keep a right stochastic matrix
         v = v*P;               
         PW = PWupdate(N,v);     % update win probabilities
         n = n+1;              
     end
     
-    eps = 1e-4;             % new tolerance for overshoot
     % if probability of winning is unreasonably large or timeout
-    if(sum(PW)-eps > 1 || n>=maxIterations)
+    if(abs(sum(PW)-1) > tolerance)
         error = true;
     else
         error = false;
     end
     
-    % only give probability for Team 1.
-    P1 = PW(1);
+    % only give probability for chosen Team.
+    PTeam = PW(Team);
 end
 
 
